@@ -196,9 +196,32 @@ JOIN top_5_cities_by_reviews t
 GROUP BY c.city, cat.category_name
 ORDER BY total_reviews DESC, avg_rating DESC;
 
+-- Añadimos una métrica adicional: número medio de reviews por restaurante en estas ciudades principales. Dado que puede ser interesante por si queremos montar un negocio de comida a domicilio en estas ciudades.
+SELECT 
+    c.city,
+    cat.category_name,
+    COUNT(f.fact_id) AS total_restaurants,
+    ROUND(AVG(f.rating_percent), 2) AS avg_rating,
+    SUM(f.rating_total) AS total_reviews,
+    ROUND(
+        SUM(f.rating_total)::NUMERIC / COUNT(f.fact_id),
+        2
+    ) AS reviews_per_restaurant
+FROM fact_restaurant_ratings f
+JOIN dim_city c ON f.city_id = c.city_id
+JOIN dim_category cat ON f.category_id = cat.category_id
+JOIN top_5_cities_by_reviews t
+    ON c.city = t.city
+GROUP BY c.city, cat.category_name
+ORDER BY total_reviews DESC, avg_rating DESC;
+
+
 
 -- Conclusiones: 
     --En el caso de abrir un negocio de comida a domicilio en Marruecos:
         -- Observamos que los mejores ratings se encunetran en ciudades como Laayoune, Agadir y Tamesna.
         -- Los mejores ratings de comida se lo llevan las categorias de Cocina Local y tradicional, sin embargo hay un menor numero de restaurantes en estas categorias para comida a domicilio.
         -- Las categorias de Sandwiches y Comida Rapida tienen ratings medios más bajos, lo que puede indicar una oportunidad de mejora en estos sectores.
+        -- Observamos que en Casablanca y Tanger tenemos un buen rating medio para la categoria Sandwiches, con un gran numero de ventas, lo que puede indicar una buena oportunidad de negocio en estas ciudades para esta categoria.
+        -- Otra opcion de negocio puede ser abrir un restaurante de comida asiatica en Cablanca, dado que
+
