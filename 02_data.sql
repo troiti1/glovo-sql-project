@@ -166,6 +166,11 @@ WHERE restaurant_name IS NULL
 SELECT COUNT(*) AS total_filas
 FROM restaurantes;
 
+
+
+-- CARGA DE DATOS LIMPIOS EN EL ESQUEMA DEFINIDO
+
+BEGIN;
 -- Tenemos ahora 44018 rows limpias para trabajar
 
 -- ============================================================
@@ -265,6 +270,9 @@ JOIN dim_category dcat
 JOIN dim_calendar dcal
     ON dcal.full_date = CURRENT_DATE;
 
+
+
+COMMIT;
 --Comprobamos los datos insertados
 SELECT * FROM fact_restaurant_ratings LIMIT 10;
 
