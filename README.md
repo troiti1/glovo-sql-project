@@ -66,7 +66,7 @@ glovo/
 │   ├── 02_data.sql
 │   └── 03_eda.sql
 │
-├── model.png
+├── ER_Glovo.png
 └── README.md
 ```
 
