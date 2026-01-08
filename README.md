@@ -55,25 +55,27 @@ El proyecto sigue una arquitectura de **Data Warehouse**, separando claramente:
 
 ### Estructura del repositorio
 
+```
 glovo/
 │
 ├── data/
-│ └── glovo_data.csv
+│   └── glovo_data.csv
 │
 ├── sql/
-│ ├── 01_schema.sql
-│ ├── 02_data.sql
-│ └── 03_eda.sql
+│   ├── 01_schema.sql
+│   ├── 02_data.sql
+│   └── 03_eda.sql
 │
 ├── model.png
 └── README.md
+```
 
 
 ## Modelo Entidad–Relación
 
 El siguiente diagrama representa el modelo entidad–relación del proyecto, diseñado siguiendo un enfoque de **modelo estrella**, donde la tabla de hechos se relaciona con múltiples tablas de dimensiones.
 
-![ER_Glovo](model.png)
+![ER_Glovo](ER_Glovo.png)
 
 
 ---
