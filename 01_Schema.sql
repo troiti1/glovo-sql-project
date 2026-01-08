@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS fact_restaurant_ratings (
     rating_percent NUMERIC(3,2) CHECK (rating_percent BETWEEN 0 AND 1),
     rating_total INT CHECK (rating_total >= 0),
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Como fecha agregamos la fecha de creación del registro para suplirir la falta de una fecha específica en los datos originales.
 
     CONSTRAINT fk_restaurant
         FOREIGN KEY (restaurant_id) REFERENCES dim_restaurant(restaurant_id),

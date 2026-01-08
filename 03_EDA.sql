@@ -8,7 +8,7 @@
 
 
 -- En primer lugar, realizamos consultas básicas para entender la distribución de los datos en las tablas de dimensiones y hechos.
--- A partir de esta query podemos sacar un top 5 ciudades con mejor rating para ver donde se come mejor en Marruecos
+-- A partir de esta query podemos sacar un top 5 ciudades con mejor rating para ver donde se come mejor en Marruecos.
 
 SELECT
 
@@ -23,7 +23,7 @@ ORDER BY avg_rating DESC LIMIT 5;
 
 
 
--- Detectaremos categorias con ratings bajos o sin rating para identificar oportunidades de mejora
+-- Detectaremos categorias con ratings bajos o sin rating para identificar oportunidades de mejoras:
 
 SELECT
     cat.category_name,
@@ -146,7 +146,7 @@ ORDER BY avg_rating DESC;
 
 -- Con el uso de la fuinción creada en el esquema, obtenemos el rating medio de una ciudad específica.
 
-SELECT fn_avg_rating_by_city('Marrakech') AS avg_rating_marrakech;
+SELECT fn_avg_rating_by_city('Agadir') AS avg_rating_agadir;
 
 
 -- Vista resumen final con métricas agregadas por ciudad y categoría, ordenada por el total de reviews.
@@ -163,3 +163,42 @@ JOIN dim_city c ON f.city_id = c.city_id
 JOIN dim_category cat ON f.category_id = cat.category_id
 GROUP BY c.city, cat.category_name
 ORDER BY total_reviews DESC;
+
+
+
+-- Análisis adicional: Identificamos las 5 ciudades con mayor número de reviews totales para enfocar el análisis en los mercados más activos.
+
+CREATE TABLE top_5_cities_by_reviews AS
+SELECT
+    c.city,
+    SUM(f.rating_total) AS total_reviews
+FROM fact_restaurant_ratings f
+JOIN dim_city c ON f.city_id = c.city_id
+GROUP BY c.city
+ORDER BY total_reviews DESC
+LIMIT 5;
+
+SELECT * FROM top_5_cities_by_reviews;
+
+-- Ahora, utilizamos esta tabla para filtrar la vista agregada y centrarnos en estas ciudades principales.
+
+SELECT
+    c.city,
+    cat.category_name,
+    COUNT(f.fact_id) AS total_restaurants,
+    ROUND(AVG(f.rating_percent), 2) AS avg_rating,
+    SUM(f.rating_total) AS total_reviews
+FROM fact_restaurant_ratings f
+JOIN dim_city c ON f.city_id = c.city_id
+JOIN dim_category cat ON f.category_id = cat.category_id
+JOIN top_5_cities_by_reviews t
+    ON c.city = t.city
+GROUP BY c.city, cat.category_name
+ORDER BY total_reviews DESC, avg_rating DESC;
+
+
+-- Conclusiones: 
+    --En el caso de abrir un negocio de comida a domicilio en Marruecos:
+        -- Observamos que los mejores ratings se encunetran en ciudades como Laayoune, Agadir y Tamesna.
+        -- Los mejores ratings de comida se lo llevan las categorias de Cocina Local y tradicional, sin embargo hay un menor numero de restaurantes en estas categorias para comida a domicilio.
+        -- Las categorias de Sandwiches y Comida Rapida tienen ratings medios más bajos, lo que puede indicar una oportunidad de mejora en estos sectores.
