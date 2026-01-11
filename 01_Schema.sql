@@ -17,9 +17,9 @@
 
 CREATE TABLE IF NOT EXISTS dim_restaurant (
     restaurant_id SERIAL PRIMARY KEY,
-    restaurant_name VARCHAR(150) NOT NULL,
+    restaurant_name VARCHAR(150) NOT NULL, -- agrego un NOT NULL para asegurar que el nombre siempre esté presente y evitar registros incompletos.
     restaurant_url VARCHAR(255),
-    CONSTRAINT uq_restaurant UNIQUE (restaurant_name, restaurant_url)
+    CONSTRAINT uq_restaurant UNIQUE (restaurant_name, restaurant_url) -- agrego el unique para evitar duplicados exactos como por ejemplo que se me dupliquen los restaurantes con el mismo nombre y URL.
 );
 
 --dim_city

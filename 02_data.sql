@@ -153,7 +153,7 @@ SELECT COUNT(*) AS total_filas
 FROM restaurantes;
 
 
--- Eliminamos aquellas rows con nulls para trabahar con datos limpios en las dimensiones y hechos (2191 de 46209)
+-- Eliminamos aquellas rows con nulls para trabajar con datos limpios en las dimensiones y hechos (2191 rows de 46209 rows)
 DELETE FROM restaurantes
 WHERE restaurant_name IS NULL
    OR city IS NULL
