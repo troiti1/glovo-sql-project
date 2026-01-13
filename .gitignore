@@ -1,0 +1,7 @@
+docker-compose.yaml
+.env
+pgdata/
+*.log
+*.tmp
+.DS_Store
+.vscode/
