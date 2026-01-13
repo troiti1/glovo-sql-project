@@ -49,13 +49,13 @@ SELECT
     CASE
         WHEN f.rating_percent >= 0.90 THEN 'Excelente'
         WHEN f.rating_percent >= 0.75 THEN 'Bueno'
-        WHEN f.rating_percent IS NULL THEN 'Sin rating'
+       -- WHEN f.rating_percent IS NULL THEN 'Sin rating'
         ELSE 'Mejorable'
     END AS rating_category
 FROM fact_restaurant_ratings f
 JOIN dim_restaurant r ON f.restaurant_id = r.restaurant_id -- Cruzamos para mostrar el nombre de los restaurantes
 JOIN dim_city c ON f.city_id = c.city_id -- Cruzamos para mostrar el nombre de las ciudades
-ORDER BY f.rating_percent DESC NULLS LAST;  -- Ordena por rating de mayor a menor, y los que no tienen rating se ponen al final.
+ORDER BY f.rating_percent ;--DESC NULLS LAST;  -- Ordena por rating de mayor a menor, y los que no tienen rating se ponen al final.
 
 
 -- Seleccionamos los 10 restaurantes con mejor rating_percent que superan la media global para ver los mejores locales
@@ -147,7 +147,7 @@ ORDER BY avg_rating DESC;
 
 -- Con el uso de la fuinción creada en el esquema, obtenemos el rating medio de una ciudad específica.
 
-SELECT fn_avg_rating_by_city('Agadir') AS avg_rating_agadir;
+SELECT fn_avg_rating_by_city('Marrakech') AS avg_rating_agadir;
 
 
 -- Vista resumen final con métricas agregadas por ciudad y categoría, ordenada por el total de reviews.
